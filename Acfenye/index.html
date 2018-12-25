@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <script src="jquery-1.11.1.js"></script>
+    <style type="text/css">
+        .dangqian {
+        background-color: #69F
+        }
+    </style>
+</head>
+
+<body>
+
+<div>
+    <input type="text" id="key" />
+    <input type="button" value="查询" id="chaxun" />
+</div>
+
+<table width="100%" border="1" cellpadding="0" cellspacing="0">
+    <tr>
+        <td>代号</td>
+        <td>名称</td>
+        <td>父级代号</td>
+    </tr>
+
+    <tbody id="nr">
+
+    </tbody>
+
+</table>
+
+<div id="xinxi">
+
+</div>
+
+</body>
+<script type="text/javascript">
+
+var page = 1; //当前页
+
+Load(); //加载数据
+LoadXinXi(); //加载分页信息
+
+//查询
+$("#chaxun").click(function() {
+    page = 1;
+    Load(); //加载数据
+    LoadXinXi(); //加载分页信息
+})
+
+function Load() {
+    var key = $("#key").val(); //查询条件
+    console.time('start2')
+    $.ajax({
+        url: "chuli.php",
+        data: {
+            page: page,
+            key: key
+        },
+        type: "POST",
+        dataType: "JSON",
+        success: function(data) {
+            console.time('start1')
+            console.log(data);
+            var str = "";
+l
+            for(var k in data) {
+                str += "<tr><td>" + data[k].AreaCode + "</td><td>" + data[k].AreaName + "</td><td>" + data[k].ParentAreaCode + "</td></tr>";
+            }
+            $("#nr").html(str);
+            console.timeEnd('start1')
+        }
+    });
+    console.timeEnd('start2')
+}
+
+function LoadXinXi() {
+    var str = "";
+    var minys = 1;
+    var maxys = 1;
+    var key = $("#key").val();
+
+    //查总页数
+    $.ajax({
+        async: false,
+        url: "zys.php",
+        data: {
+            key: key
+        },
+        type: "POST",
+        dataType: "TEXT",
+        success: function(d) {
+            maxys = d;
+            console.log(maxys);
+        }
+    });
+
+    str += "<span>总共：" + maxys + "页</span>  ";
+    str += "<span id='prev'><a href='javascript:;'>上一页</a></span>";
+
+    for(var i = page - 2; i < page + 3; i++) {
+        if(i >= minys && i <= maxys) {
+            if(i == page) {
+                str += "<a href='javascript:;'><span class='dangqian' bs='" + i + "'>" + i + "</span></a> ";
+            } else {
+                str += "<a href='javascript:;'><span class='list' bs='" + i + "'>" + i + "</span></a>";
+            }
+
+        }
+    }
+
+    str += "<a href='javascript:;'><span id='next'>下一页</span></a>";
+
+    $("#xinxi").html(str);
+
+    //给上一页添加点击事件
+    $("#prev").click(function() {
+        page = page - 1;
+        if(page < 1) {
+            page = 1;
+        }
+        Load(); //加载数据
+        LoadXinXi(); //加载分页信息
+    })
+    //给下一页加点击事件
+    $("#next").click(function() {
+        page = page + 1;
+        if(page > maxys) {
+            page = maxys;
+        }
+        Load(); //加载数据
+        LoadXinXi(); //加载分页信息
+    })
+    //给中间的列表加事件
+    $(".list").click(function() {
+        page = parseInt($(this).attr("bs"));
+        Load(); //加载数据
+        LoadXinXi(); //加载分页信息
+    })
+}
+
+
+</script>
+</html>

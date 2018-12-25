@@ -1,0 +1,43 @@
+function  getCookie(userId,userType){
+	var flag=false;
+	$.ajax({
+	    type:"POST",
+	    url:"/userInfoController/getUserInfo",
+	    dataType:"json",
+	    data:{userId:userId,userType:userType},
+	    async:false,//同步
+	    success:function(data){
+	    	if(data.code == '2000'){
+	    		flag=true;
+        	}else{
+        		flag=false;
+        	}
+	    },
+	    error: function(jqXHR){
+	    	flag=false;
+	    }
+	});
+	return  flag;
+}
+
+
+
+//跳转
+function redirect(num){
+	if(num==1){
+		var userId=$("#userId").val();
+		window.location.href="/outlineController/list?userId="+userId;
+	}else if(num==2){
+		window.location.href="/outlineController/questionManage";
+	}else if(num==3){
+		window.location.href="/paperTemplateController/list";
+	}else if(num==4){
+		window.location.href="/examController/list";
+	}else if(num==5){
+		window.location.href="/answerPaperController/markingList";
+	}else if(num==6){
+		window.location.href="/outlineController/statistical";
+	}else if(num==7){
+		alert('功能暂未开发,敬请期待!!!');
+	}
+}

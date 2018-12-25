@@ -1,0 +1,83 @@
+@charset "utf-8";
+
+
+//轮播图
+#banner{
+  width: 900px;
+  height: 400px;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  ul{
+
+    li{
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+  ol{
+    width: 210px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    li{
+      float: left;
+      width: 20px;
+      height: 20px;
+      margin: 0 10px;
+      border-radius: 50%;
+      cursor: default;
+      background-color: #abc;
+    }
+    li.current{
+      background-color: pink;
+    }
+  }
+}
+
+//文章主要内容
+#main{
+
+  height: 500px;
+  padding-top: 50px;
+  h2{
+    background: #7dc7f5;
+  }
+  li{
+    height: 30px;
+    line-height: 30px;
+    border-top: 1px solid #999999;
+    a{
+      display: block;
+      padding-left: 20px;
+      width: 450px;
+      height: 30px;
+      white-space:nowrap;
+      overflow: hidden;
+      text-overflow:ellipsis;
+    }
+  }
+}
+//招考政策
+#main_left{
+  background: #e7e1cd;
+  width: 500px;
+  float: left;
+}
+
+//省内新闻
+#main_right{
+  background: #e7e1cd;
+  width: 500px;
+  float: right;
+}
+
+
+
+
+
+
+
